@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Python Concepts Learning Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            background: #f3f4f6;
+            padding: 20px 40px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .content {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #f9fafb;
+            border-right: 2px solid #e5e7eb;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .concept-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .concept-item:hover {
+            background: #e5e7eb;
+        }
+
+        .concept-item.active {
+            background: #3b82f6;
+            color: white;
+            font-weight: bold;
+        }
+
+        .concept-item.completed {
+            background: #d1fae5;
+        }
+
+        .concept-item.completed::before {
+            content: "✓";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: #10b981;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 14px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            height: 600px;
+            overflow-y: auto;
+        }
+
+        .concept-section {
+            display: none;
+        }
+
+        .concept-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .concept-section h2 {
+            color: #1f2937;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        .concept-section p {
+            color: #4b5563;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        .try-it-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .try-it-box h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .output-box {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            min-height: 60px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .key-points {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .key-points h3 {
+            color: #92400e;
+            margin-bottom: 10px;
+        }
+
+        .key-points ul {
+            margin-left: 20px;
+            color: #78350f;
+        }
+
+        .key-points li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .example-box {
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .example-box h3 {
+            color: #065f46;
+            margin-bottom: 15px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .concept-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .concept-item.completed .concept-number {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐍 Interactive Python Learning Hub</h1>
+            <p>Master 24 Essential Python Concepts with Interactive Examples</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="sidebar" id="sidebar">
+                <!-- Concept items will be generated here -->
+            </div>
+
+            <div class="main-content" id="mainContent">
+                <!-- Concept sections will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const concepts = [
+            {
+                id: 1,
+                title: "Variables in Python",
+                description: "Variables are containers for storing data values. In Python, you don't need to declare a variable's type - it's automatically determined when you assign a value.",
+                code: '# Creating variables\nname = "Alice"\nage = 30\nheight = 5.5\nis_student = True\n\nprint(f"Name: {name}")\nprint(f"Age: {age}")\nprint(f"Height: {height}")\nprint(f"Student: {is_student}")',
+                keyPoints: [
+                    "Variables store data that can be used and modified",
+                    "No type declaration needed (dynamically typed)",
+                    "Assignment uses the = operator",
+                    "Variable names should be descriptive"
+                ],
+                interactive: true
+            },
+            {
+                id: 2,
+                title: "String Manipulation",
+                description: "Strings are sequences of characters. Python provides many methods to manipulate and format strings effectively.",
+                code: '# String operations\nfirst_name = "John"\nlast_name = "Doe"\n\n# Concatenation\nfull_name = first_name + " " + last_name\nprint(full_name)\n\n# String methods\nprint(full_name.upper())      # JOHN DOE\nprint(full_name.lower())      # john doe\nprint(full_name.replace("Doe", "Smith"))\n\n# F-strings (formatted strings)\nage = 25\nmessage = f"{first_name} is {age} years old"\nprint(message)',
+                keyPoints: [
+                    "Strings can be concatenated with +",
+                    "F-strings provide elegant formatting",
+                    "Many built-in methods: upper(), lower(), replace(), split()",
+                    "Strings are immutable (cannot be changed in place)"
+                ],
+                interactive: true
+            },
+            {
+                id: 3,
+                title: "Input and Print Functions",
+                description: "Input allows you to receive data from users, while print displays information to the console.",
+                code: '# Print function\nprint("Hello, World!")\nprint("Multiple", "values", "here")\nprint("Custom separator", sep=" | ")\n\n# Input function\nname = input("Enter your name: ")\nprint(f"Hello, {name}!")\n\n# Print without newline\nprint("Loading", end="...")\nprint("Done!")',
+                keyPoints: [
+                    "print() displays output to the console",
+                    "input() receives text input from users",
+                    "input() always returns a string",
+                    "Use sep and end parameters to customize print output"
+                ],
+                interactive: true
+            },
+            {
+                id: 4,
+                title: "Variable Naming Rules",
+                description: "Python has specific rules for naming variables to ensure code clarity and avoid errors.",
+                code: '# Valid variable names\nmy_var = "valid"\nvar2 = "valid"\n_private = "valid"\nCONSTANT_VALUE = "valid"\n\n# Invalid variable names (will cause errors)\n# 2var = "invalid"      # Can\'t start with number\n# my-var = "invalid"    # Can\'t use hyphens\n# class = "invalid"     # Can\'t use keywords\n\n# Best practices\nuser_name = "John"      # Snake case (recommended)\nuserName = "John"       # Camel case (also acceptable)',
+                keyPoints: [
+                    "Must start with a letter or underscore",
+                    "Can contain letters, numbers, and underscores",
+                    "Case-sensitive (age and Age are different)",
+                    "Cannot use Python keywords (if, for, class, etc.)",
+                    "Use descriptive names for readability"
+                ],
+                interactive: false
+            },
+            {
+                id: 5,
+                title: "Mathematical Operations",
+                description: "Python supports all standard mathematical operations plus some advanced ones.",
+                code: 'a = 15\nb = 4\n\nprint(f"Addition: {a} + {b} = {a + b}")\nprint(f"Subtraction: {a} - {b} = {a - b}")\nprint(f"Multiplication: {a} * {b} = {a * b}")\nprint(f"Division: {a} / {b} = {a / b}")\nprint(f"Floor Division: {a} // {b} = {a // b}")\nprint(f"Modulus: {a} % {b} = {a % b}")\nprint(f"Exponentiation: {a} ** {b} = {a ** b}")\n\n# Compound assignment\nx = 10\nx += 5  # Same as x = x + 5\nprint(x)',
+                keyPoints: [
+                    "+ (addition), - (subtraction), * (multiplication)",
+                    "/ (division returns float), // (floor division returns int)",
+                    "% (modulus - remainder), ** (exponentiation)",
+                    "Compound operators: +=, -=, *=, /="
+                ],
+                interactive: true
+            },
+            {
+                id: 6,
+                title: "Data Types",
+                description: "Python has several built-in data types to represent different kinds of information.",
+                code: '# Numeric types\ninteger_num = 42              # int\nfloat_num = 3.14              # float\n\n# Text type\ntext = "Hello"                # str\n\n# Boolean type\nis_true = True                # bool\n\n# Collection types\nmy_list = [1, 2, 3]          # list\nmy_tuple = (1, 2, 3)         # tuple\nmy_dict = {"key": "value"}   # dict\nmy_set = {1, 2, 3}           # set\n\n# Check type\nprint(type(integer_num))     # <class \'int\'>\nprint(type(text))            # <class \'str\'>',
+                keyPoints: [
+                    "int: Whole numbers (42, -10, 0)",
+                    "float: Decimal numbers (3.14, -0.5)",
+                    "str: Text/strings ('hello', \"world\")",
+                    "bool: True or False",
+                    "list, tuple, dict, set: Collection types",
+                    "Use type() to check a variable's type"
+                ],
+                interactive: true
+            },
+            {
+                id: 7,
+                title: "Converting Types",
+                description: "Type conversion (casting) allows you to change data from one type to another.",
+                code: '# String to number\nage_str = "25"\nage_int = int(age_str)\nage_float = float(age_str)\n\nprint(f"String: \'{age_str}\' -> Int: {age_int} -> Float: {age_float}")\n\n# Number to string\nnumber = 42\nnumber_str = str(number)\nprint(f"Number: {number} -> String: \'{number_str}\'")\n\n# String to list\ntext = "hello"\nchar_list = list(text)\nprint(char_list)  # [\'h\', \'e\', \'l\', \'l\', \'o\']\n\n# Be careful with conversions\n# int("3.14")  # Error! Use float() first\nvalid = int(float("3.14"))  # Works!',
+                keyPoints: [
+                    "int() converts to integer (truncates decimals)",
+                    "float() converts to floating-point number",
+                    "str() converts to string",
+                    "list(), tuple(), set() convert to collections",
+                    "Some conversions may raise errors if invalid"
+                ],
+                interactive: true
+            },
+            {
+                id: 8,
+                title: "Conditionals (IF/ELIF/ELSE)",
+                description: "Conditional statements allow your program to make decisions and execute different code based on conditions.",
+                code: '# Basic if statement\nage = 18\nif age >= 18:\n    print("You are an adult")\n\n# If-else\nscore = 75\nif score >= 60:\n    print("Pass")\nelse:\n    print("Fail")\n\n# If-elif-else\ngrade = 85\nif grade >= 90:\n    print("A - Excellent!")\nelif grade >= 80:\n    print("B - Good job!")\nelif grade >= 70:\n    print("C - Satisfactory")\nelse:\n    print("D - Needs improvement")',
+                keyPoints: [
+                    "if checks a condition and executes code if True",
+                    "elif (else if) checks additional conditions",
+                    "else executes when all conditions are False",
+                    "Indentation is crucial - defines the code block",
+                    "Conditions return True or False"
+                ],
+                interactive: true
+            },
+            {
+                id: 9,
+                title: "Logical Operators",
+                description: "Logical operators combine multiple conditions: AND, OR, and NOT.",
+                code: 'x = 10\ny = 20\nz = 30\n\n# AND operator (both must be True)\nif x < y and y < z:\n    print("Both conditions are True")\n\n# OR operator (at least one must be True)\nif x > 100 or y > 15:\n    print("At least one condition is True")\n\n# NOT operator (reverses the condition)\nis_raining = False\nif not is_raining:\n    print("It\'s not raining!")\n\n# Combining operators\nage = 25\nhas_license = True\nif age >= 18 and has_license:\n    print("Can drive")',
+                keyPoints: [
+                    "and: Both conditions must be True",
+                    "or: At least one condition must be True",
+                    "not: Reverses the boolean value",
+                    "Can combine multiple operators",
+                    "Evaluated left to right with short-circuiting"
+                ],
+                interactive: true
+            },
+            {
+                id: 10,
+                title: "Randomisation",
+                description: "The random module allows you to generate random numbers and make random selections.",
+                code: 'import random\n\n# Random integer between range\ndice_roll = random.randint(1, 6)\nprint(f"Dice roll: {dice_roll}")\n\n# Random float between 0 and 1\nrandom_float = random.random()\nprint(f"Random float: {random_float}")\n\n# Random choice from a list\ncolors = ["red", "green", "blue", "yellow"]\nchosen_color = random.choice(colors)\nprint(f"Random color: {chosen_color}")\n\n# Shuffle a list\nnumbers = [1, 2, 3, 4, 5]\nrandom.shuffle(numbers)\nprint(f"Shuffled: {numbers}")',
+                keyPoints: [
+                    "import random to use the random module",
+                    "randint(a, b) returns random integer from a to b (inclusive)",
+                    "random() returns float between 0.0 and 1.0",
+                    "choice(list) picks random element from list",
+                    "shuffle(list) randomly reorders list in place"
+                ],
+                interactive: true
+            },
+            {
+                id: 11,
+                title: "Error Handling",
+                description: "Error handling allows your program to gracefully handle exceptions and continue running.",
+                code: '# Basic try-except\ntry:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("Cannot divide by zero!")\n\n# Multiple exceptions\ntry:\n    number = int("not_a_number")\nexcept ValueError:\n    print("Invalid number format")\nexcept TypeError:\n    print("Type error occurred")\n\n# Try-except-else-finally\ntry:\n    value = 10 / 2\nexcept ZeroDivisionError:\n    print("Error occurred")\nelse:\n    print(f"Success: {value}")\nfinally:\n    print("This always runs")',
+                keyPoints: [
+                    "try block contains code that might raise an error",
+                    "except block handles specific exceptions",
+                    "else block runs if no exception occurred",
+                    "finally block always executes (cleanup code)",
+                    "Use 'as e' to access exception details"
+                ],
+                interactive: true
+            },
+            {
+                id: 12,
+                title: "Functions",
+                description: "Functions are reusable blocks of code that perform specific tasks. They help organize code and avoid repetition.",
+                code: '# Simple function\ndef greet(name):\n    return f"Hello, {name}!"\n\nmessage = greet("Alice")\nprint(message)\n\n# Function with multiple parameters\ndef add_numbers(a, b):\n    sum_result = a + b\n    return sum_result\n\nresult = add_numbers(5, 3)\nprint(f"Sum: {result}")\n\n# Function with default parameter\ndef power(base, exponent=2):\n    return base ** exponent\n\nprint(power(5))      # 25 (uses default)\nprint(power(5, 3))   # 125',
+                keyPoints: [
+                    "Define functions with 'def' keyword",
+                    "Functions can take parameters (inputs)",
+                    "Use 'return' to send values back",
+                    "Can have default parameter values",
+                    "Functions promote code reusability"
+                ],
+                interactive: true
+            },
+            {
+                id: 13,
+                title: "For Loops",
+                description: "For loops allow you to iterate over sequences (lists, strings, ranges) and execute code repeatedly.",
+                code: '# Loop through range\nprint("Counting 0 to 4:")\nfor i in range(5):\n    print(i, end=" ")\nprint()\n\n# Loop through list\nfruits = ["apple", "banana", "cherry"]\nfor fruit in fruits:\n    print(f"I like {fruit}")\n\n# Loop with start, stop, step\nprint("Even numbers:")\nfor num in range(2, 11, 2):\n    print(num, end=" ")\nprint()\n\n# Enumerate for index and value\nfor index, fruit in enumerate(fruits):\n    print(f"{index}: {fruit}")',
+                keyPoints: [
+                    "for loops iterate over sequences",
+                    "range(n) creates sequence from 0 to n-1",
+                    "range(start, stop, step) for custom sequences",
+                    "enumerate() provides both index and value",
+                    "Can loop through lists, strings, tuples, etc."
+                ],
+                interactive: true
+            },
+            {
+                id: 14,
+                title: "Code Blocks and Indentation",
+                description: "Python uses indentation (whitespace) to define code blocks instead of braces or keywords.",
+                code: '# Indentation defines blocks\ndef my_function():\n    print("Inside function")\n\n    if True:\n        print("Inside if block")\n\n        for i in range(2):\n            print(f"Inside loop: {i}")\n\n    print("Back to function level")\n\nmy_function()\nprint("Outside function")',
+                keyPoints: [
+                    "Python uses indentation to define code structure",
+                    "Standard is 4 spaces per indentation level",
+                    "All lines in a block must have same indentation",
+                    "IndentationError occurs with incorrect spacing",
+                    "Indentation makes code readable and structure clear"
+                ],
+                interactive: false
+            },
+            {
+                id: 15,
+                title: "While Loops",
+                description: "While loops repeat code as long as a condition remains True. Be careful to avoid infinite loops!",
+                code: '# Basic while loop\ncounter = 0\nwhile counter < 5:\n    print(f"Counter: {counter}")\n    counter += 1\n\n# While with break\ncount = 0\nwhile True:\n    print(count, end=" ")\n    count += 1\n    if count >= 5:\n        break  # Exit the loop\nprint()\n\n# While with continue\nnum = 0\nwhile num < 10:\n    num += 1\n    if num % 2 == 0:\n        continue  # Skip even numbers\n    print(num, end=" ")',
+                keyPoints: [
+                    "while loops run as long as condition is True",
+                    "Must update condition variable to avoid infinite loops",
+                    "break exits the loop immediately",
+                    "continue skips to next iteration",
+                    "Use while when iterations are unknown in advance"
+                ],
+                interactive: true
+            },
+            {
+                id: 16,
+                title: "Flowchart Programming",
+                description: "Flowchart programming represents the logical flow of decision-making in code using conditional branches.",
+                code: '# Simulating a flowchart\ndef process_order(total, customer_type):\n    print(f"Processing {customer_type} order...")\n\n    # Decision: Customer type\n    if customer_type == "VIP":\n        discount = 0.20\n    elif customer_type == "Regular":\n        discount = 0.10\n    else:\n        discount = 0.0\n\n    final_price = total * (1 - discount)\n\n    # Decision: Shipping\n    if final_price > 100:\n        shipping = 0\n    else:\n        shipping = 10\n\n    total_cost = final_price + shipping\n    print(f"Final cost: ${total_cost:.2f}")\n    return total_cost\n\nprocess_order(150, "VIP")',
+                keyPoints: [
+                    "Flowcharts visualize program logic flow",
+                    "Decision points use if/elif/else statements",
+                    "Each path leads to different outcomes",
+                    "Useful for planning complex logic",
+                    "Helps identify all possible scenarios"
+                ],
+                interactive: true
+            },
+            {
+                id: 17,
+                title: "Positional and Keyword Arguments",
+                description: "Functions can accept arguments by position or by name (keyword), providing flexibility in function calls.",
+                code: '# Function with multiple parameters\ndef person_info(name, age, city="Unknown"):\n    return f"{name}, {age} years old, from {city}"\n\n# Positional arguments (order matters)\nprint(person_info("Alice", 30, "NYC"))\n\n# Keyword arguments (order doesn\'t matter)\nprint(person_info(age=25, name="Bob", city="LA"))\n\n# Mixed (positional first, then keyword)\nprint(person_info("Charlie", age=35, city="Paris"))\n\n# Using default value\nprint(person_info("Diana", 28))\n\n# *args and **kwargs\ndef flexible_func(*args, **kwargs):\n    print(f"Args: {args}")\n    print(f"Kwargs: {kwargs}")\n\nflexible_func(1, 2, 3, name="Test", value=100)',
+                keyPoints: [
+                    "Positional arguments: passed by order",
+                    "Keyword arguments: passed by name",
+                    "Default parameters provide fallback values",
+                    "*args accepts variable positional arguments",
+                    "**kwargs accepts variable keyword arguments",
+                    "Positional args must come before keyword args"
+                ],
+                interactive: true
+            },
+            {
+                id: 18,
+                title: "Python Dictionaries and Lists",
+                description: "Lists store ordered collections, while dictionaries store key-value pairs. Both are fundamental data structures.",
+                code: '# Lists - ordered, mutable collections\nfruits = ["apple", "banana", "cherry"]\nprint(f"List: {fruits}")\nprint(f"First: {fruits[0]}")\nfruits.append("orange")\nprint(f"After append: {fruits}")\n\n# Dictionaries - key-value pairs\nperson = {\n    "name": "Alice",\n    "age": 30,\n    "city": "NYC"\n}\n\nprint(f"Dict: {person}")\nprint(f"Name: {person[\'name\']}")\nprint(f"Age: {person.get(\'age\')}")\n\n# Add new key-value\nperson["email"] = "alice@email.com"\nprint(f"Keys: {list(person.keys())}")\nprint(f"Values: {list(person.values())}")',
+                keyPoints: [
+                    "Lists: ordered, indexed by position [0, 1, 2...]",
+                    "Dictionaries: unordered, indexed by keys",
+                    "Lists use [], dictionaries use {}",
+                    "Lists: append(), remove(), sort() methods",
+                    "Dicts: keys(), values(), items() methods",
+                    "Both are mutable (can be modified)"
+                ],
+                interactive: true
+            },
+            {
+                id: 19,
+                title: "Nested Collections",
+                description: "Collections can contain other collections, creating multi-dimensional data structures.",
+                code: '# Nested lists (2D array)\nmatrix = [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n]\nprint(f"Element at [1][2]: {matrix[1][2]}")\n\n# Nested dictionaries\ncompany = {\n    "engineering": {\n        "employees": ["Alice", "Bob"],\n        "budget": 100000\n    },\n    "marketing": {\n        "employees": ["Charlie"],\n        "budget": 75000\n    }\n}\n\nprint(f"Engineering budget: {company[\'engineering\'][\'budget\']}")\n\n# List of dictionaries\nstudents = [\n    {"name": "John", "grade": 85},\n    {"name": "Jane", "grade": 92}\n]\n\nfor student in students:\n    print(f"{student[\'name\']}: {student[\'grade\']}")',
+                keyPoints: [
+                    "Lists can contain lists (2D, 3D arrays)",
+                    "Dictionaries can contain dictionaries",
+                    "Access nested items with multiple brackets",
+                    "Lists of dictionaries are common patterns",
+                    "Useful for representing complex data structures"
+                ],
+                interactive: true
+            },
+            {
+                id: 20,
+                title: "Returning Functions",
+                description: "Functions can return other functions, enabling powerful programming patterns like closures and function factories.",
+                code: '# Function that returns a function\ndef create_multiplier(factor):\n    def multiplier(x):\n        return x * factor\n    return multiplier\n\n# Create specialized functions\ndouble = create_multiplier(2)\ntriple = create_multiplier(3)\n\nprint(f"Double 5: {double(5)}")\nprint(f"Triple 5: {triple(5)}")\n\n# Function factory\ndef create_greeting(greeting):\n    def greet(name):\n        return f"{greeting}, {name}!"\n    return greet\n\nsay_hello = create_greeting("Hello")\nsay_hi = create_greeting("Hi")\n\nprint(say_hello("Alice"))\nprint(say_hi("Bob"))',
+                keyPoints: [
+                    "Functions are first-class objects in Python",
+                    "Can return functions from functions",
+                    "Inner functions can access outer function variables",
+                    "Creates closures (function + its environment)",
+                    "Useful for creating customized functions"
+                ],
+                interactive: true
+            },
+            {
+                id: 21,
+                title: "Return vs. Print",
+                description: "Return and print are fundamentally different: return gives values back to the caller, print displays to console.",
+                code: '# Function with return\ndef add_with_return(a, b):\n    return a + b\n\n# Function with print\ndef add_with_print(a, b):\n    print(f"Sum: {a + b}")\n\n# Return value can be stored and used\nresult = add_with_return(5, 3)\nprint(f"Stored result: {result}")\nprint(f"Can calculate: {result * 2}")\n\n# Print returns None\nreturned = add_with_print(5, 3)\nprint(f"Print returns: {returned}")\n\n# Return stops function execution\ndef check_age(age):\n    if age < 0:\n        return "Invalid age"\n    if age < 18:\n        return "Minor"\n    return "Adult"',
+                keyPoints: [
+                    "return sends values back to the caller",
+                    "print displays output to console",
+                    "Returned values can be stored and reused",
+                    "print returns None",
+                    "return exits the function immediately",
+                    "Functions without return statement return None"
+                ],
+                interactive: true
+            },
+            {
+                id: 22,
+                title: "Doc Strings vs. Comments",
+                description: "Docstrings document functions/classes (accessible at runtime), while comments explain code implementation.",
+                code: 'def calculate_area(length, width):\n    """\n    Calculate the area of a rectangle.\n\n    Args:\n        length: The length of the rectangle\n        width: The width of the rectangle\n\n    Returns:\n        The area (length * width)\n    """\n    # This is a comment explaining implementation\n    area = length * width  # Inline comment\n    return area\n\n# Access the docstring\nprint(calculate_area.__doc__)\n\n# Comments are ignored by Python\n# They help developers understand code\n# Use # for single-line comments',
+                keyPoints: [
+                    "Docstrings: First string in function/class (triple quotes)",
+                    "Docstrings accessible via __doc__ attribute",
+                    "Comments: Use # symbol, ignored by Python",
+                    "Docstrings describe what function does",
+                    "Comments explain how/why code works",
+                    "Good documentation improves code maintainability"
+                ],
+                interactive: false
+            },
+            {
+                id: 23,
+                title: "Scope and Local/Global Variables",
+                description: "Variable scope determines where variables can be accessed. Local variables exist in functions, global variables exist everywhere.",
+                code: '# Global variable\nglobal_var = "I am global"\n\ndef scope_demo():\n    # Local variable\n    local_var = "I am local"\n    print(f"Inside: {global_var}")\n    print(f"Inside: {local_var}")\n\nscope_demo()\nprint(f"Outside: {global_var}")\n# print(local_var)  # Error! Not accessible\n\n# Modifying global variables\ncounter = 0\n\ndef increment():\n    global counter  # Declare as global\n    counter += 1\n    print(f"Counter: {counter}")\n\nincrement()\nincrement()\nprint(f"Final counter: {counter}")',
+                keyPoints: [
+                    "Local variables: defined inside functions",
+                    "Global variables: defined outside functions",
+                    "Local variables not accessible outside function",
+                    "Use 'global' keyword to modify global variables",
+                    "Inner functions can access outer function variables",
+                    "LEGB rule: Local, Enclosing, Global, Built-in"
+                ],
+                interactive: true
+            },
+            {
+                id: 24,
+                title: "Debugging Techniques",
+                description: "Debugging helps find and fix errors. Python provides several techniques: print debugging, assertions, and error handling.",
+                code: '# 1. Print debugging\ndef calculate_average(numbers):\n    print(f"DEBUG: Input: {numbers}")\n    total = sum(numbers)\n    print(f"DEBUG: Total: {total}")\n    count = len(numbers)\n    print(f"DEBUG: Count: {count}")\n    avg = total / count\n    return avg\n\nresult = calculate_average([10, 20, 30])\nprint(f"Average: {result}")\n\n# 2. Assertions\ndef divide(a, b):\n    assert b != 0, "Divisor cannot be zero!"\n    assert isinstance(a, (int, float)), "a must be number"\n    return a / b\n\n# 3. Type checking\ndef debug_info(var, name="variable"):\n    print(f"DEBUG: {name}")\n    print(f"  Value: {var}")\n    print(f"  Type: {type(var)}")',
+                keyPoints: [
+                    "Print debugging: Add print statements to trace execution",
+                    "Assertions: Verify assumptions with assert statements",
+                    "Type checking: Use type() to inspect variable types",
+                    "Error messages provide clues about problems",
+                    "Use try-except to catch and examine errors",
+                    "Debugging is systematic: isolate, identify, fix"
+                ],
+                interactive: true
+            }
+        ];
+
+        let completedConcepts = new Set();
+        let currentConcept = 0;
+
+        function updateProgress() {
+            const progress = (completedConcepts.size / concepts.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+        }
+
+        function markAsCompleted(conceptId) {
+            completedConcepts.add(conceptId);
+            updateProgress();
+
+            const conceptItem = document.querySelector(`[data-concept-id="${conceptId}"]`);
+            if (conceptItem) {
+                conceptItem.classList.add('completed');
+            }
+        }
+
+        function showConcept(index) {
+            // Hide all sections
+            document.querySelectorAll('.concept-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const section = document.getElementById('concept-' + index);
+            if (section) {
+                section.classList.add('active');
+            }
+
+            // Update sidebar
+            document.querySelectorAll('.concept-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeItem = document.querySelector('[data-concept-id="' + index + '"]');
+            if (activeItem) {
+                activeItem.classList.add('active');
+            }
+
+            currentConcept = index;
+        }
+
+        function runCode(conceptId) {
+            const concept = concepts[conceptId];
+            const outputDiv = document.getElementById('output-' + conceptId);
+
+            outputDiv.innerHTML = '<span style="color: #10b981;">✓ Code executed successfully!</span><br>';
+            outputDiv.innerHTML += '<span style="color: #60a5fa;">Check your browser console for output</span><br>';
+            outputDiv.innerHTML += '<span style="color: #fbbf24;">Note: This is a simulated output</span>';
+
+            // Log to console
+            console.log('--- Running Concept ' + (conceptId + 1) + ': ' + concept.title + ' ---');
+            console.log(concept.code);
+        }
+
+        function nextConcept() {
+            if (currentConcept < concepts.length - 1) {
+                markAsCompleted(currentConcept);
+                showConcept(currentConcept + 1);
+            }
+        }
+
+        function previousConcept() {
+            if (currentConcept > 0) {
+                showConcept(currentConcept - 1);
+            }
+        }
+
+        function initializePage() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+
+            // Generate sidebar items
+            concepts.forEach(function(concept, index) {
+                const item = document.createElement('div');
+                item.className = 'concept-item';
+                item.setAttribute('data-concept-id', index);
+                item.innerHTML = '<span class="concept-number">' + (index + 1) + '</span>' + concept.title;
+                item.onclick = function() { showConcept(index); };
+                sidebar.appendChild(item);
+            });
+
+            // Generate content sections
+            concepts.forEach(function(concept, index) {
+                const section = document.createElement('div');
+                section.className = 'concept-section';
+                section.id = 'concept-' + index;
+
+                let interactiveSection = '';
+                if (concept.interactive) {
+                    interactiveSection = '<div class="try-it-box">' +
+                        '<h3>🚀 Try It Yourself!</h3>' +
+                        '<p>Click the button below to run this code example:</p>' +
+                        '<button class="btn btn-primary" onclick="runCode(' + index + ')">▶ Run Code</button>' +
+                        '<div class="output-box" id="output-' + index + '">Output will appear here...</div>' +
+                        '</div>';
+                }
+
+                let keyPointsHTML = '<ul>';
+                concept.keyPoints.forEach(function(point) {
+                    keyPointsHTML += '<li>' + point + '</li>';
+                });
+                keyPointsHTML += '</ul>';
+
+                section.innerHTML = '<h2>' + concept.title + '</h2>' +
+                    '<p>' + concept.description + '</p>' +
+                    '<div class="example-box">' +
+                    '<h3>📝 Code Example</h3>' +
+                    '<div class="code-block"><code>' + escapeHtml(concept.code) + '</code></div>' +
+                    '</div>' +
+                    interactiveSection +
+                    '<div class="key-points">' +
+                    '<h3>🔑 Key Points</h3>' +
+                    keyPointsHTML +
+                    '</div>' +
+                    '<div class="navigation">' +
+                    '<button class="btn btn-primary" onclick="previousConcept()" ' + (index === 0 ? 'disabled' : '') + '>← Previous</button>' +
+                    '<button class="btn btn-success" onclick="markAsCompleted(' + index + ')">✓ Mark as Complete</button>' +
+                    '<button class="btn btn-primary" onclick="nextConcept()" ' + (index === concepts.length - 1 ? 'disabled' : '') + '>Next →</button>' +
+                    '</div>';
+
+                mainContent.appendChild(section);
+            });
+
+            // Show first concept
+            showConcept(0);
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Initialize when page loads
+        window.onload = initializePage;
+    </script>
+</body>
+</html>
