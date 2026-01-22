@@ -324,6 +324,122 @@
         .concept-item.completed .concept-number {
             background: #10b981;
         }
+
+        .footer {
+            background: #f9fafb;
+            border-top: 3px solid #e5e7eb;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .donation-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .donation-section h3 {
+            color: #92400e;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .donation-section p {
+            color: #78350f;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .btn-donate {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-donate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .about-section {
+            background: #eff6ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .about-section h3 {
+            color: #1e40af;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .about-section p {
+            color: #1e3a8a;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-contact {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-contact:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -347,6 +463,58 @@
             <div class="main-content" id="mainContent">
                 <!-- Concept sections will be generated here -->
             </div>
+        </div>
+
+        <div class="footer">
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Python Concepts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Forever</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Ads</div>
+                </div>
+            </div>
+
+            <div class="donation-section">
+                <h3>☕ Enjoying This Free Resource?</h3>
+                <p>If you find this Python learning hub helpful, consider supporting my work!<br>
+                Your donation helps keep this site free, ad-free, and constantly improving.</p>
+                <a href="https://buymeacoffee.com/ramikraftc" target="_blank" class="btn-donate">
+                    ☕ Buy Me a Coffee
+                </a>
+                <p style="margin-top: 15px; font-size: 0.9em;">Every coffee makes a difference! 💙</p>
+            </div>
+
+            <div class="about-section">
+                <h3>👋 About the Creator</h3>
+                <p>
+                    Hi! I'm <strong>Rami</strong>, a Python enthusiast passionate about making programming education accessible to everyone.
+                    I created this interactive learning hub to help beginners master Python fundamentals through clear explanations,
+                    practical examples, and hands-on practice.
+                </p>
+                <p>
+                    This project is open-source and completely free. My goal is to help as many people as possible learn Python
+                    and start their programming journey. If you have suggestions, feedback, or just want to say hello, feel free to reach out!
+                </p>
+                <div class="contact-info">
+                    <a href="mailto:ramikraft@gmail.com" class="btn-contact">
+                        ✉️ Email Me
+                    </a>
+                    <a href="https://github.com/ramdevkra" target="_blank" class="btn-contact">
+                        💻 GitHub
+                    </a>
+                </div>
+            </div>
+
+            <p style="margin-top: 30px; color: #6b7280; font-size: 0.9em;">
+                Made with ❤️ for the Python community | © 2026 Python Learning Hub
+            </p>
         </div>
     </div>
 
