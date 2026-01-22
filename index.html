@@ -473,6 +473,52 @@
             color: #6b7280;
             font-size: 0.9em;
         }
+
+        .floating-donate {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
+            font-weight: bold;
+            text-decoration: none;
+            display: none;
+            z-index: 1000;
+            animation: bounce 2s infinite;
+        }
+
+        .floating-donate.show {
+            display: block;
+        }
+
+        .floating-donate:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .floating-donate {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -516,12 +562,31 @@
 
             <div class="donation-section">
                 <h3>☕ Enjoying This Free Resource?</h3>
+                <p style="background: white; padding: 10px; border-radius: 8px; font-weight: bold; color: #d97706; margin-bottom: 15px;">
+                    🌟 Be Among the FIRST 10 Supporters! 🌟
+                </p>
                 <p>If you find this Python learning hub helpful, consider supporting my work!<br>
                 Your donation helps keep this site free, ad-free, and constantly improving.</p>
+
+                <div style="background: white; padding: 15px; border-radius: 10px; margin: 20px 0;">
+                    <p style="font-weight: bold; color: #92400e; margin-bottom: 10px;">🎯 January Goal: $50 to add 5 new advanced concepts</p>
+                    <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden; position: relative;">
+                        <div style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+                    </div>
+                    <p style="font-size: 0.85em; color: #78350f; margin-top: 8px;">$0 raised of $50 goal</p>
+                </div>
+
                 <a href="https://buymeacoffee.com/ramikraftc" target="_blank" class="btn-donate">
-                    ☕ Buy Me a Coffee
+                    ☕ Buy Me a Coffee ($3)
                 </a>
-                <p style="margin-top: 15px; font-size: 0.9em;">Every coffee makes a difference! 💙</p>
+
+                <p style="margin-top: 15px; font-size: 0.9em; color: #78350f;">
+                    💙 <strong>First 5 supporters get:</strong> Personalized thank you + Your name on "Founding Supporters" page + Early access to new features!
+                </p>
+
+                <p style="margin-top: 10px; font-size: 0.85em; font-style: italic; color: #92400e;">
+                    "This site helped me understand Python loops finally! Worth every penny." - Anonymous supporter
+                </p>
             </div>
 
             <div class="about-section">
@@ -550,6 +615,11 @@
             </p>
         </div>
     </div>
+
+    <!-- Floating Donation Button (appears after interaction) -->
+    <a href="https://buymeacoffee.com/ramikraftc" target="_blank" class="floating-donate" id="floatingDonate">
+        ☕ Support ($3)
+    </a>
 
     <script>
         const concepts = [
@@ -921,6 +991,9 @@
                     'value': conceptId + 1
                 });
             }
+
+            // Check if we should show floating donate button
+            checkFloatingDonate();
         }
 
         function showConcept(index) {
@@ -1122,9 +1195,27 @@
             return text.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
+        // Show floating donate button after user completes 3 concepts
+        function checkFloatingDonate() {
+            if (completedConcepts.size >= 3) {
+                const floatingBtn = document.getElementById('floatingDonate');
+                if (floatingBtn) {
+                    floatingBtn.classList.add('show');
+                }
+            }
+        }
+
         // Initialize when page loads
         window.onload = function() {
             initializePage();
+
+            // Show floating button after 30 seconds of browsing
+            setTimeout(function() {
+                const floatingBtn = document.getElementById('floatingDonate');
+                if (floatingBtn && completedConcepts.size === 0) {
+                    floatingBtn.classList.add('show');
+                }
+            }, 30000);
 
             // Track Buy Me a Coffee clicks
             const donateButton = document.querySelector('.btn-donate');
