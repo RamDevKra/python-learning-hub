@@ -232,6 +232,21 @@
             background: #059669;
         }
 
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
         .navigation {
             display: flex;
             justify-content: space-between;
@@ -726,13 +741,79 @@
             const concept = concepts[conceptId];
             const outputDiv = document.getElementById('output-' + conceptId);
 
-            outputDiv.innerHTML = '<span style="color: #10b981;">✓ Code executed successfully!</span><br>';
-            outputDiv.innerHTML += '<span style="color: #60a5fa;">Check your browser console for output</span><br>';
-            outputDiv.innerHTML += '<span style="color: #fbbf24;">Note: This is a simulated output</span>';
+            // Simulated outputs for each concept
+            const outputs = [
+                // 0: Variables
+                'Name: Alice\nAge: 30\nHeight: 5.5\nStudent: True',
+                // 1: String Manipulation
+                'John Doe\nJOHN DOE\njohn doe\nJohn Smith\nJohn is 25 years old',
+                // 2: Input and Print
+                'Hello, World!\nMultiple values here\nCustom separator | here\nHello, [User]!\nLoading...Done!',
+                // 3: Variable Naming Rules
+                'Valid variables created: my_var, var2, _private, CONSTANT_VALUE\nRules: Start with letter/underscore, no spaces, no special chars except underscore',
+                // 4: Mathematical Operations
+                'Addition: 15 + 4 = 19\nSubtraction: 15 - 4 = 11\nMultiplication: 15 * 4 = 60\nDivision: 15 / 4 = 3.75\nFloor Division: 15 // 4 = 3\nModulus: 15 % 4 = 3\nExponentiation: 15 ** 4 = 50625\n15',
+                // 5: Data Types
+                'Numeric types: int, float\nText type: str\nBoolean type: bool\n<class \'int\'>\n<class \'str\'>',
+                // 6: Converting Types
+                'String: \'25\' -> Int: 25 -> Float: 25.0\nNumber: 42 -> String: \'42\'\n[\'h\', \'e\', \'l\', \'l\', \'o\']',
+                // 7: Conditionals
+                'You are an adult\nPass\nB - Good job!',
+                // 8: Logical Operators
+                'Both conditions are True\nAt least one condition is True\nIt\'s not raining!\nCan drive',
+                // 9: Randomisation
+                'Dice roll: 4\nRandom float: 0.7234\nRandom color: blue\nShuffled: [3, 1, 5, 2, 4]',
+                // 10: Error Handling
+                'Cannot divide by zero!\nInvalid number format\nSuccess: 5.0\nThis always runs',
+                // 11: Functions
+                'Hello, Alice!\nSum: 8\n25\n125',
+                // 12: For Loops
+                'Counting 0 to 4:\n0 1 2 3 4 \nI like apple\nI like banana\nI like cherry\nEven numbers:\n2 4 6 8 10 \n0: apple\n1: banana\n2: cherry',
+                // 13: Code Blocks
+                'Inside function\nInside if block\nInside loop: 0\nInside loop: 1\nBack to function level\nOutside function',
+                // 14: While Loops
+                'Counter: 0\nCounter: 1\nCounter: 2\nCounter: 3\nCounter: 4\n0 1 2 3 4 \n1 3 5 7 9',
+                // 15: Flowchart Programming
+                'Processing VIP order...\nFinal cost: $120.00',
+                // 16: Positional and Keyword Arguments
+                'Alice, 30 years old, from NYC\nBob, 25 years old, from LA\nCharlie, 35 years old, from Paris\nDiana, 28 years old, from Unknown\nArgs: (1, 2, 3)\nKwargs: {\'name\': \'Test\', \'value\': 100}',
+                // 17: Dictionaries and Lists
+                'List: [\'apple\', \'banana\', \'cherry\']\nFirst: apple\nAfter append: [\'apple\', \'banana\', \'cherry\', \'orange\']\nDict: {\'name\': \'Alice\', \'age\': 30, \'city\': \'NYC\'}\nName: Alice\nAge: 30\nKeys: [\'name\', \'age\', \'city\', \'email\']\nValues: [\'Alice\', 30, \'NYC\', \'alice@email.com\']',
+                // 18: Nested Collections
+                'Element at [1][2]: 6\nEngineering budget: 100000\nJohn: 85\nJane: 92',
+                // 19: Returning Functions
+                'Double 5: 10\nTriple 5: 15\nHello, Alice!\nHi, Bob!',
+                // 20: Return vs Print
+                'Stored result: 8\nCan calculate: 16\nSum: 8\nPrint returns: None',
+                // 21: Doc Strings vs Comments
+                '\n    Calculate the area of a rectangle.\n\n    Args:\n        length: The length of the rectangle\n        width: The width of the rectangle\n\n    Returns:\n        The area (length * width)\n    ',
+                // 22: Scope
+                'Inside: I am global\nInside: I am local\nOutside: I am global\nCounter: 1\nCounter: 2\nFinal counter: 2',
+                // 23: Debugging
+                'DEBUG: Input: [10, 20, 30]\nDEBUG: Total: 60\nDEBUG: Count: 3\nAverage: 20.0\nDEBUG: my_list\n  Value: [1, 2, 3]\n  Type: <class \'list\'>'
+            ];
 
-            // Log to console
-            console.log('--- Running Concept ' + (conceptId + 1) + ': ' + concept.title + ' ---');
-            console.log(concept.code);
+            // Display the output with animation
+            outputDiv.innerHTML = '<span style="color: #fbbf24;">▶ Running code...</span>';
+
+            setTimeout(function() {
+                outputDiv.innerHTML = '<span style="color: #10b981;">✓ Code executed successfully!</span><br><br>';
+                outputDiv.innerHTML += '<span style="color: #e5e7eb;">--- Output ---</span><br>';
+                outputDiv.innerHTML += '<span style="color: #60a5fa;">' + outputs[conceptId].replace(/\n/g, '<br>') + '</span>';
+            }, 500);
+        }
+
+        function copyCode(conceptId) {
+            const concept = concepts[conceptId];
+            const outputDiv = document.getElementById('output-' + conceptId);
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(concept.code).then(function() {
+                outputDiv.innerHTML = '<span style="color: #10b981;">✓ Code copied to clipboard!</span><br>';
+                outputDiv.innerHTML += '<span style="color: #e5e7eb;">Paste it into your Python editor to run it.</span>';
+            }).catch(function() {
+                outputDiv.innerHTML = '<span style="color: #ef4444;">❌ Could not copy. Please copy manually from the code box above.</span>';
+            });
         }
 
         function nextConcept() {
@@ -772,8 +853,11 @@
                 if (concept.interactive) {
                     interactiveSection = '<div class="try-it-box">' +
                         '<h3>🚀 Try It Yourself!</h3>' +
-                        '<p>Click the button below to run this code example:</p>' +
+                        '<p>Run the code to see simulated output, or copy it to try in your own Python environment:</p>' +
+                        '<div class="btn-group">' +
                         '<button class="btn btn-primary" onclick="runCode(' + index + ')">▶ Run Code</button>' +
+                        '<button class="btn btn-secondary" onclick="copyCode(' + index + ')">📋 Copy Code</button>' +
+                        '</div>' +
                         '<div class="output-box" id="output-' + index + '">Output will appear here...</div>' +
                         '</div>';
                 }
