@@ -3,7 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Python Concepts Learning Hub</title>
+
+    <!-- SEO Meta Tags -->
+    <title>Learn Python Free - Interactive Python Tutorial for Beginners 2026</title>
+    <meta name="description" content="Master Python programming with 24 interactive lessons. Free Python tutorial with code examples, simulated outputs, and progress tracking. Perfect for beginners. No signup required.">
+    <meta name="keywords" content="learn python, python tutorial, python for beginners, free python course, interactive python learning, python programming, python basics, coding tutorial">
+    <meta name="author" content="Rami - Python Learning Hub">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ramdevkra.github.io/python-learning-hub/">
+    <meta property="og:title" content="Learn Python Free - Interactive Python Tutorial for Beginners">
+    <meta property="og:description" content="Master Python with 24 interactive lessons. 100% free, no ads, no signup. Learn programming the easy way!">
+    <meta property="og:image" content="https://ramdevkra.github.io/python-learning-hub/preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ramdevkra.github.io/python-learning-hub/">
+    <meta property="twitter:title" content="Learn Python Free - Interactive Python Tutorial">
+    <meta property="twitter:description" content="Master Python with 24 interactive lessons. 100% free, no ads, no signup.">
+    <meta property="twitter:image" content="https://ramdevkra.github.io/python-learning-hub/preview.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ramdevkra.github.io/python-learning-hub/">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHBVZSC9PW"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FHBVZSC9PW');
+    </script>
+
     <style>
         * {
             margin: 0;
@@ -879,6 +912,15 @@
             if (conceptItem) {
                 conceptItem.classList.add('completed');
             }
+
+            // Track concept completion in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'concept_completed', {
+                    'event_category': 'learning',
+                    'event_label': concepts[conceptId].title,
+                    'value': conceptId + 1
+                });
+            }
         }
 
         function showConcept(index) {
@@ -968,6 +1010,15 @@
                 outputDiv.innerHTML = '<span style="color: #10b981;">✓ Code executed successfully!</span><br><br>';
                 outputDiv.innerHTML += '<span style="color: #e5e7eb;">--- Output ---</span><br>';
                 outputDiv.innerHTML += '<span style="color: #60a5fa;">' + outputs[conceptId].replace(/\n/g, '<br>') + '</span>';
+
+                // Track code execution in Google Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'code_run', {
+                        'event_category': 'interaction',
+                        'event_label': concept.title,
+                        'value': conceptId + 1
+                    });
+                }
             }, 500);
         }
 
@@ -1072,7 +1123,49 @@
         }
 
         // Initialize when page loads
-        window.onload = initializePage;
+        window.onload = function() {
+            initializePage();
+
+            // Track Buy Me a Coffee clicks
+            const donateButton = document.querySelector('.btn-donate');
+            if (donateButton) {
+                donateButton.addEventListener('click', function() {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'donation_click', {
+                            'event_category': 'monetization',
+                            'event_label': 'Buy Me a Coffee',
+                            'value': 1
+                        });
+                    }
+                });
+            }
+
+            // Track email button clicks
+            const emailButton = document.querySelector('a[href^="mailto:"]');
+            if (emailButton) {
+                emailButton.addEventListener('click', function() {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'contact_click', {
+                            'event_category': 'engagement',
+                            'event_label': 'Email'
+                        });
+                    }
+                });
+            }
+
+            // Track GitHub button clicks
+            const githubButton = document.querySelector('a[href*="github.com"]');
+            if (githubButton) {
+                githubButton.addEventListener('click', function() {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'social_click', {
+                            'event_category': 'engagement',
+                            'event_label': 'GitHub'
+                        });
+                    }
+                });
+            }
+        };
     </script>
 </body>
 </html>
