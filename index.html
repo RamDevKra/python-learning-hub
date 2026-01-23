@@ -125,6 +125,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .concept-item:hover {
@@ -244,6 +246,8 @@
             font-weight: bold;
             transition: all 0.3s ease;
             margin-right: 10px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .btn-primary {
@@ -511,12 +515,238 @@
             }
         }
 
+        /* Mobile Responsive Design */
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .progress-container {
+                padding: 15px 20px;
+            }
+
+            .content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+                border-right: none;
+                border-bottom: 2px solid #e5e7eb;
+            }
+
+            .concept-item {
+                padding: 12px 15px;
+                font-size: 0.9em;
+            }
+
+            .concept-number {
+                width: 25px;
+                height: 25px;
+                line-height: 25px;
+                font-size: 0.85em;
+            }
+
+            .main-content {
+                padding: 20px;
+                height: auto;
+                max-height: none;
+            }
+
+            .concept-section h2 {
+                font-size: 1.5em;
+            }
+
+            .concept-section p {
+                font-size: 1em;
+            }
+
+            .code-block {
+                padding: 15px;
+                font-size: 0.85em;
+            }
+
+            .try-it-box {
+                padding: 15px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+                width: 100%;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .navigation .btn {
+                width: 100%;
+            }
+
+            .footer {
+                padding: 30px 20px;
+            }
+
+            .stats {
+                gap: 20px;
+            }
+
+            .stat-number {
+                font-size: 1.5em;
+            }
+
+            .donation-section {
+                padding: 20px;
+            }
+
+            .donation-section h3 {
+                font-size: 1.3em;
+            }
+
+            .donation-section p {
+                font-size: 1em;
+            }
+
+            .btn-donate {
+                padding: 12px 24px;
+                font-size: 1.1em;
+                width: 100%;
+            }
+
+            .about-section {
+                padding: 20px;
+            }
+
+            .about-section h3 {
+                font-size: 1.3em;
+            }
+
+            .contact-info {
+                flex-direction: column;
+            }
+
+            .btn-contact {
+                width: 100%;
+            }
+
             .floating-donate {
                 bottom: 10px;
                 right: 10px;
+                left: 10px;
+                text-align: center;
                 padding: 10px 16px;
                 font-size: 0.9em;
+            }
+        }
+
+        /* Tablet (iPad) Responsive Design */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .sidebar {
+                width: 250px;
+            }
+
+            .main-content {
+                padding: 30px;
+            }
+
+            .concept-section h2 {
+                font-size: 1.8em;
+            }
+
+            .footer {
+                padding: 35px;
+            }
+        }
+
+        /* Small phones */
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header p {
+                font-size: 0.9em;
+            }
+
+            .concept-section h2 {
+                font-size: 1.3em;
+            }
+
+            .code-block {
+                font-size: 0.75em;
+                padding: 12px;
+            }
+
+            .key-points,
+            .try-it-box,
+            .example-box {
+                padding: 12px;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+
+            .donation-section h3,
+            .about-section h3 {
+                font-size: 1.2em;
+            }
+
+            .stat-number {
+                font-size: 1.3em;
+            }
+
+            .stat-label {
+                font-size: 0.8em;
+            }
+        }
+
+        /* Landscape orientation for phones */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .sidebar {
+                max-height: 200px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
             }
         }
     </style>
@@ -562,8 +792,8 @@
 
             <div class="donation-section">
                 <h3>☕ Enjoying This Free Resource?</h3>
-                <p style="background: white; padding: 10px; border-radius: 8px; font-weight: bold; color: #d97706; margin-bottom: 15px;">
-                    🌟 Be Among the FIRST 10 Supporters! 🌟
+                <p style="background: white; padding: 10px; border-radius: 8px; font-weight: bold; color: #10b981; margin-bottom: 15px;">
+                    🎉 Join 1 Amazing Supporter! Be Among the FIRST 10! 🎉
                 </p>
                 <p>If you find this Python learning hub helpful, consider supporting my work!<br>
                 Your donation helps keep this site free, ad-free, and constantly improving.</p>
@@ -571,9 +801,9 @@
                 <div style="background: white; padding: 15px; border-radius: 10px; margin: 20px 0;">
                     <p style="font-weight: bold; color: #92400e; margin-bottom: 10px;">🎯 January Goal: $50 to add 5 new advanced concepts</p>
                     <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden; position: relative;">
-                        <div style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+                        <div style="background: linear-gradient(90deg, #10b981 0%, #059669 100%); width: 6%; height: 100%; transition: width 0.3s ease;"></div>
                     </div>
-                    <p style="font-size: 0.85em; color: #78350f; margin-top: 8px;">$0 raised of $50 goal</p>
+                    <p style="font-size: 0.85em; color: #78350f; margin-top: 8px;">$3 raised of $50 goal (6%) 🚀</p>
                 </div>
 
                 <a href="https://buymeacoffee.com/ramikraftc" target="_blank" class="btn-donate">
@@ -581,7 +811,8 @@
                 </a>
 
                 <p style="margin-top: 15px; font-size: 0.9em; color: #78350f;">
-                    💙 <strong>First 5 supporters get:</strong> Personalized thank you + Your name on "Founding Supporters" page + Early access to new features!
+                    💙 <strong>First 5 supporters get:</strong> Personalized thank you + Your name on "Founding Supporters" page + Early access to new features!<br>
+                    <span style="color: #10b981; font-weight: bold;">✨ Only 4 spots left!</span>
                 </p>
 
                 <p style="margin-top: 10px; font-size: 0.85em; font-style: italic; color: #92400e;">
